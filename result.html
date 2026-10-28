@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prediction Result – PropAI</title>
+  <meta name="description" content="AI-generated property price prediction result with detailed market analysis." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon"><i class="fa-solid fa-house-chimney"></i></div>
+      <div class="logo-text">
+        <div class="logo-title">PropAI</div>
+        <div class="logo-sub">Real Estate Intelligence</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <a href="dashboard.html" class="nav-item"><span class="nav-item-icon"><i class="fa-solid fa-gauge-high"></i></span>Dashboard</a>
+      <a href="prediction.html" class="nav-item"><span class="nav-item-icon"><i class="fa-solid fa-brain"></i></span>New Prediction</a>
+      <a href="saved-reports.html" class="nav-item"><span class="nav-item-icon"><i class="fa-solid fa-folder-open"></i></span>Saved Reports <span class="nav-badge" id="sidebarReportCount">0</span></a>
+      <div class="nav-section-label">Account</div>
+      <a href="index.html" class="nav-item" onclick="logout()"><span class="nav-item-icon"><i class="fa-solid fa-right-from-bracket"></i></span>Logout</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="avatar" id="sidebarAvatar">D</div>
+        <div><div class="user-name" id="sidebarUserName">Demo User</div><div class="user-role">Property Analyst</div></div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="mobile-menu-btn" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+        <div class="page-title">Prediction Result</div>
+      </div>
+      <div class="topbar-right">
+        <a href="prediction.html" class="btn btn-outline btn-sm"><i class="fa-solid fa-rotate-left"></i> New Prediction</a>
+        <button class="btn btn-primary btn-sm" onclick="goToReport()" style="width:auto;padding:0.5rem 1.1rem;">
+          <i class="fa-solid fa-file-lines"></i> View Full Report
+        </button>
+      </div>
+    </header>
+
+    <main class="page-content">
+
+      <!-- Hero Price Banner -->
+      <div class="result-hero" id="resultHero">
+        <div style="position:relative;z-index:1;">
+          <div class="result-price-label">
+            <i class="fa-solid fa-robot"></i>
+            AI Estimated Market Value
+            <span style="background:rgba(255,255,255,0.15);border-radius:9999px;padding:0.15rem 0.6rem;font-size:0.75rem;">PropAI v3.2</span>
+          </div>
+          <div class="result-price" id="resultPrice">₹0</div>
+          <div class="result-range" id="resultRange">Range: ₹0 – ₹0</div>
+
+          <div class="result-meta-grid">
+            <div class="result-meta-item">
+              <div class="result-meta-val" id="rMetaConfidence">0%</div>
+              <div class="result-meta-lbl">AI Confidence</div>
+            </div>
+            <div class="result-meta-item">
+              <div class="result-meta-val" id="rMetaTrend">–</div>
+              <div class="result-meta-lbl">Market Trend</div>
+            </div>
+            <div class="result-meta-item">
+              <div class="result-meta-val" id="rMetaInvScore">0/100</div>
+              <div class="result-meta-lbl">Investment Score</div>
+            </div>
+            <div class="result-meta-item">
+              <div class="result-meta-val" id="rMetaYield">0%</div>
+              <div class="result-meta-lbl">Rental Yield</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Property Info Bar -->
+      <div class="card" style="margin-bottom:1.5rem;">
+        <div style="display:flex;flex-wrap:wrap;gap:1rem;align-items:center;">
+          <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.88rem;color:var(--text-secondary);">
+            <i class="fa-solid fa-building" style="color:var(--primary);"></i>
+            <span id="propTypeLabel">–</span>
+          </div>
+          <div style="width:1px;height:20px;background:var(--border);"></div>
+          <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.88rem;color:var(--text-secondary);">
+            <i class="fa-solid fa-location-dot" style="color:var(--danger);"></i>
+            <span id="propLocationLabel">–</span>
+          </div>
+          <div style="width:1px;height:20px;background:var(--border);"></div>
+          <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.88rem;color:var(--text-secondary);">
+            <i class="fa-solid fa-ruler-combined" style="color:var(--secondary);"></i>
+            <span id="propAreaLabel">–</span>
+          </div>
+          <div style="width:1px;height:20px;background:var(--border);"></div>
+          <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.88rem;color:var(--text-secondary);">
+            <i class="fa-solid fa-bed" style="color:var(--accent);"></i>
+            <span id="propBHKLabel">–</span>
+          </div>
+          <div style="margin-left:auto;display:flex;gap:0.5rem;">
+            <button class="btn btn-secondary btn-sm" onclick="saveReport()">
+              <i class="fa-solid fa-floppy-disk"></i> Save Report
+            </button>
+            <button class="btn btn-outline btn-sm" onclick="goToReport()">
+              <i class="fa-solid fa-file-pdf"></i> Full Report
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Row -->
+      <div class="result-grid">
+
+        <!-- Confidence + Score Bars -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><i class="fa-solid fa-gauge" style="color:var(--primary);"></i> AI Confidence Score</div>
+          </div>
+          <div class="confidence-ring-wrapper">
+            <div class="confidence-ring">
+              <svg viewBox="0 0 150 150" width="150" height="150">
+                <defs>
+                  <linearGradient id="ring-gradient" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#1a6cf3"/>
+                    <stop offset="100%" stop-color="#00b87a"/>
+                  </linearGradient>
+                </defs>
+                <circle class="ring-track" cx="75" cy="75" r="65"/>
+                <circle class="ring-fill" id="ringFill" cx="75" cy="75" r="65"/>
+              </svg>
+              <div class="ring-label">
+                <div class="ring-value" id="ringValue">0</div>
+                <div class="ring-unit">% Confidence</div>
+              </div>
+            </div>
+            <div style="margin-top:1rem;text-align:center;">
+              <span id="confidenceBadge" class="tag tag-green">High Confidence</span>
+              <p style="font-size:0.8rem;color:var(--text-muted);margin-top:0.5rem;">Based on 2,400+ comparable properties</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Key Metrics Bars -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><i class="fa-solid fa-chart-bar" style="color:var(--secondary);"></i> Key Metrics</div>
+          </div>
+          <div class="score-bars">
+            <div class="score-bar-item">
+              <div class="score-bar-header">
+                <span class="score-bar-label"><i class="fa-solid fa-trophy" style="color:var(--accent);margin-right:4px;"></i>Investment Score</span>
+                <span class="score-bar-val" id="barInvestScore">0/100</span>
+              </div>
+              <div class="score-bar-track"><div class="score-bar-fill bar-amber" id="barInvFill" style="width:0%"></div></div>
+            </div>
+            <div class="score-bar-item">
+              <div class="score-bar-header">
+                <span class="score-bar-label"><i class="fa-solid fa-arrow-trend-up" style="color:var(--secondary);margin-right:4px;"></i>Future Appreciation</span>
+                <span class="score-bar-val" id="barAppreciation">0%</span>
+              </div>
+              <div class="score-bar-track"><div class="score-bar-fill bar-green" id="barAppFill" style="width:0%"></div></div>
+            </div>
+            <div class="score-bar-item">
+              <div class="score-bar-header">
+                <span class="score-bar-label"><i class="fa-solid fa-key" style="color:var(--primary);margin-right:4px;"></i>Rental Yield</span>
+                <span class="score-bar-val" id="barRentalYield">0%</span>
+              </div>
+              <div class="score-bar-track"><div class="score-bar-fill bar-blue" id="barRentFill" style="width:0%"></div></div>
+            </div>
+            <div class="score-bar-item">
+              <div class="score-bar-header">
+                <span class="score-bar-label"><i class="fa-solid fa-house-circle-check" style="color:#7c3aed;margin-right:4px;"></i>Liquidity Score</span>
+                <span class="score-bar-val" id="barLiquidity">0/100</span>
+              </div>
+              <div class="score-bar-track"><div class="score-bar-fill bar-purple" id="barLiqFill" style="width:0%"></div></div>
+            </div>
+          </div>
+
+          <div style="margin-top:1.5rem;padding:1rem;background:var(--bg-main);border-radius:12px;">
+            <div style="font-weight:700;font-size:0.85rem;color:var(--text-primary);margin-bottom:0.5rem;">
+              <i class="fa-solid fa-lightbulb" style="color:var(--accent);margin-right:4px;"></i>AI Insight
+            </div>
+            <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;" id="aiInsightText">
+              Loading AI insight...
+            </p>
+          </div>
+        </div>
+
+      </div><!-- /result-grid -->
+
+      <!-- Value Breakdown + Market Trend Charts -->
+      <div class="result-grid">
+
+        <!-- Pie Chart: Value Breakdown -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><i class="fa-solid fa-chart-pie" style="color:var(--primary);"></i> Property Value Breakdown</div>
+          </div>
+          <div class="chart-container" style="max-height:280px;display:flex;justify-content:center;">
+            <canvas id="pieChart" style="max-height:280px;max-width:280px;"></canvas>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-top:1rem;" id="pieLegend"></div>
+        </div>
+
+        <!-- Bar Chart: Market Trend -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><i class="fa-solid fa-chart-bar" style="color:var(--secondary);"></i> Market Price Trend</div>
+            <span class="tag tag-blue" id="trendBadge">–</span>
+          </div>
+          <div class="chart-container" style="height:240px;">
+            <canvas id="barChart"></canvas>
+          </div>
+          <div style="margin-top:1rem;display:flex;justify-content:space-between;align-items:center;">
+            <div style="font-size:0.82rem;color:var(--text-muted);">
+              <i class="fa-solid fa-calendar" style="margin-right:4px;"></i>Last 6 Quarters
+            </div>
+            <div style="font-size:0.82rem;font-weight:600;color:var(--secondary);" id="trendGrowthLabel">+0% growth</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- CTA Buttons -->
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;margin-top:0.5rem;">
+        <button class="btn btn-primary btn-lg" onclick="goToReport()" style="width:auto;">
+          <i class="fa-solid fa-file-contract"></i> View Full AI Appraisal Report
+        </button>
+        <button class="btn btn-secondary btn-lg" onclick="saveReport()" style="width:auto;">
+          <i class="fa-solid fa-floppy-disk"></i> Save Report
+        </button>
+        <a href="prediction.html" class="btn btn-outline btn-lg" style="width:auto;">
+          <i class="fa-solid fa-rotate-left"></i> New Prediction
+        </a>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="js/auth.js"></script>
+<script src="js/result.js"></script>
+</body>
+</html>

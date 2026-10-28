@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>New Prediction – PropAI</title>
+  <meta name="description" content="Enter property details and get an instant AI-powered price prediction and appraisal report." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<div class="app-layout">
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon"><i class="fa-solid fa-house-chimney"></i></div>
+      <div class="logo-text">
+        <div class="logo-title">PropAI</div>
+        <div class="logo-sub">Real Estate Intelligence</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <a href="dashboard.html" class="nav-item">
+        <span class="nav-item-icon"><i class="fa-solid fa-gauge-high"></i></span>Dashboard
+      </a>
+      <a href="prediction.html" class="nav-item active">
+        <span class="nav-item-icon"><i class="fa-solid fa-brain"></i></span>New Prediction
+      </a>
+      <a href="saved-reports.html" class="nav-item">
+        <span class="nav-item-icon"><i class="fa-solid fa-folder-open"></i></span>Saved Reports
+        <span class="nav-badge" id="sidebarReportCount">0</span>
+      </a>
+      <div class="nav-section-label">Account</div>
+      <a href="index.html" class="nav-item" onclick="logout()">
+        <span class="nav-item-icon"><i class="fa-solid fa-right-from-bracket"></i></span>Logout
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="avatar" id="sidebarAvatar">D</div>
+        <div>
+          <div class="user-name" id="sidebarUserName">Demo User</div>
+          <div class="user-role">Property Analyst</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── Main ── -->
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="mobile-menu-btn" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+        <div class="page-title">New AI Prediction</div>
+      </div>
+      <div class="topbar-right">
+        <a href="dashboard.html" class="btn btn-outline btn-sm"><i class="fa-solid fa-arrow-left"></i> Back</a>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div style="margin-bottom:1.5rem;">
+        <h1 style="font-family:'Outfit',sans-serif;font-size:1.4rem;font-weight:800;color:var(--text-primary);margin-bottom:0.25rem;">
+          Property Price Prediction
+        </h1>
+        <p style="color:var(--text-muted);font-size:0.9rem;">
+          Fill in the property details below. Our AI will analyze and predict the market price instantly.
+        </p>
+      </div>
+
+      <div class="form-page-layout">
+
+        <!-- ── Left: Form Sections ── -->
+        <div id="formMain">
+
+          <!-- Section 1: Basic Information -->
+          <div class="form-section-card">
+            <div class="form-section-header">
+              <div class="section-num">1</div>
+              <div class="section-title"><i class="fa-solid fa-info-circle" style="color:var(--primary);margin-right:6px;"></i>Basic Information</div>
+            </div>
+
+            <div class="form-grid">
+              <div class="form-group-light">
+                <label for="propType">Property Type *</label>
+                <select id="propType" class="form-control" onchange="updateChecklist()">
+                  <option value="">Select type...</option>
+                  <option value="Apartment">🏢 Apartment</option>
+                  <option value="Villa">🏰 Villa</option>
+                  <option value="Independent House">🏡 Independent House</option>
+                  <option value="Commercial">🏗️ Commercial</option>
+                  <option value="Land">🌿 Land / Plot</option>
+                </select>
+              </div>
+              <div class="form-group-light">
+                <label for="city">City *</label>
+                <select id="city" class="form-control" onchange="updateChecklist()">
+                  <option value="">Select city...</option>
+                  <option value="Mumbai">Mumbai</option>
+                  <option value="Delhi">Delhi</option>
+                  <option value="Bengaluru">Bengaluru</option>
+                  <option value="Hyderabad">Hyderabad</option>
+                  <option value="Chennai">Chennai</option>
+                  <option value="Pune">Pune</option>
+                  <option value="Kolkata">Kolkata</option>
+                  <option value="Ahmedabad">Ahmedabad</option>
+                  <option value="Jaipur">Jaipur</option>
+                  <option value="Lucknow">Lucknow</option>
+                  <option value="Chandigarh">Chandigarh</option>
+                  <option value="Bhopal">Bhopal</option>
+                  <option value="Nagpur">Nagpur</option>
+                  <option value="Kochi">Kochi</option>
+                  <option value="Surat">Surat</option>
+                  <option value="Noida">Noida</option>
+                  <option value="Gurgaon">Gurgaon</option>
+                  <option value="Coimbatore">Coimbatore</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div class="form-group-light">
+                <label for="state">State *</label>
+                <select id="state" class="form-control" onchange="updateChecklist()">
+                  <option value="">Select state...</option>
+                  <option>Maharashtra</option>
+                  <option>Delhi NCR</option>
+                  <option>Karnataka</option>
+                  <option>Telangana</option>
+                  <option>Tamil Nadu</option>
+                  <option>Gujarat</option>
+                  <option>West Bengal</option>
+                  <option>Rajasthan</option>
+                  <option>Uttar Pradesh</option>
+                  <option>Punjab</option>
+                  <option>Madhya Pradesh</option>
+                  <option>Kerala</option>
+                  <option>Haryana</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div class="form-group-light">
+                <label for="address">Area / Locality</label>
+                <input type="text" id="address" class="form-control" placeholder="e.g. Bandra West, Andheri East..." oninput="updateChecklist()" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 2: Property Details -->
+          <div class="form-section-card">
+            <div class="form-section-header">
+              <div class="section-num">2</div>
+              <div class="section-title"><i class="fa-solid fa-ruler-combined" style="color:var(--secondary);margin-right:6px;"></i>Property Details</div>
+            </div>
+
+            <div class="form-grid">
+              <div class="form-group-light">
+                <label for="area">Built-up Area (sq.ft) *</label>
+                <input type="number" id="area" class="form-control" placeholder="e.g. 1200" min="100" max="100000" oninput="updateChecklist()" />
+              </div>
+              <div class="form-group-light">
+                <label for="furnishing">Furnishing Status</label>
+                <select id="furnishing" class="form-control">
+                  <option value="Unfurnished">Unfurnished</option>
+                  <option value="Semi-Furnished">Semi-Furnished</option>
+                  <option value="Fully Furnished">Fully Furnished</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-grid-3" style="margin-top:0.75rem;">
+              <div class="form-group-light">
+                <label for="bedrooms">Bedrooms</label>
+                <select id="bedrooms" class="form-control">
+                  <option value="0">Studio/0</option>
+                  <option value="1">1 BHK</option>
+                  <option value="2" selected>2 BHK</option>
+                  <option value="3">3 BHK</option>
+                  <option value="4">4 BHK</option>
+                  <option value="5">5+ BHK</option>
+                </select>
+              </div>
+              <div class="form-group-light">
+                <label for="bathrooms">Bathrooms</label>
+                <select id="bathrooms" class="form-control">
+                  <option value="1">1</option>
+                  <option value="2" selected>2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5+</option>
+                </select>
+              </div>
+              <div class="form-group-light">
+                <label for="parking">Parking Spots</label>
+                <select id="parking" class="form-control">
+                  <option value="0">None</option>
+                  <option value="1" selected>1</option>
+                  <option value="2">2</option>
+                  <option value="3">3+</option>
+                </select>
+              </div>
+              <div class="form-group-light">
+                <label for="propAge">Property Age (yrs)</label>
+                <input type="number" id="propAge" class="form-control" placeholder="0 = New" min="0" max="100" value="5" />
+              </div>
+              <div class="form-group-light">
+                <label for="floor">Floor Number</label>
+                <input type="number" id="floor" class="form-control" placeholder="e.g. 3" min="0" max="100" value="3" />
+              </div>
+              <div class="form-group-light">
+                <label for="totalFloors">Total Floors</label>
+                <input type="number" id="totalFloors" class="form-control" placeholder="e.g. 12" min="1" max="200" value="12" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 3: Amenities -->
+          <div class="form-section-card">
+            <div class="form-section-header">
+              <div class="section-num">3</div>
+              <div class="section-title"><i class="fa-solid fa-star" style="color:var(--accent);margin-right:6px;"></i>Amenities</div>
+            </div>
+            <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:1rem;">Select all amenities available in this property / complex.</p>
+
+            <div class="amenities-grid" id="amenitiesGrid">
+              <!-- Amenity items injected by JS -->
+            </div>
+          </div>
+
+          <!-- Section 4: Nearby Facilities -->
+          <div class="form-section-card">
+            <div class="form-section-header">
+              <div class="section-num">4</div>
+              <div class="section-title"><i class="fa-solid fa-location-dot" style="color:#8b5cf6;margin-right:6px;"></i>Nearby Facilities</div>
+            </div>
+            <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:1rem;">Check all facilities within 2 km of the property.</p>
+
+            <div class="amenities-grid" id="nearbyGrid">
+              <!-- Injected by JS -->
+            </div>
+          </div>
+
+          <!-- Section 5: Upload Image -->
+          <div class="form-section-card">
+            <div class="form-section-header">
+              <div class="section-num">5</div>
+              <div class="section-title"><i class="fa-solid fa-camera" style="color:var(--primary);margin-right:6px;"></i>Property Image (Optional)</div>
+            </div>
+
+            <div class="file-upload-area" id="uploadArea" onclick="document.getElementById('propImage').click()">
+              <div class="file-upload-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+              <div class="file-upload-text">Click to upload or drag & drop</div>
+              <div class="file-upload-sub">PNG, JPG or WEBP — Max 5 MB</div>
+              <input type="file" id="propImage" accept="image/*" style="display:none;" onchange="handleImageUpload(event)" />
+            </div>
+            <img id="uploadPreview" class="upload-preview" alt="Property preview" style="margin-top:1rem;" />
+          </div>
+
+        </div><!-- /formMain -->
+
+        <!-- ── Right: Sidebar / Checklist ── -->
+        <div>
+          <div class="form-sidebar-card">
+            <div style="font-family:'Outfit',sans-serif;font-weight:700;font-size:0.95rem;color:var(--text-primary);margin-bottom:1rem;">
+              <i class="fa-solid fa-list-check" style="color:var(--primary);margin-right:6px;"></i>Form Completion
+            </div>
+
+            <div class="form-progress">
+              <div class="progress-label">
+                <span>Progress</span>
+                <span id="progressPct">0%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width:0%"></div>
+              </div>
+            </div>
+
+            <div class="checklist" id="formChecklist">
+              <div class="checklist-item" id="chk-type">
+                <span class="check-icon"><i class="fa-solid fa-circle"></i></span>
+                Property Type
+              </div>
+              <div class="checklist-item" id="chk-city">
+                <span class="check-icon"><i class="fa-solid fa-circle"></i></span>
+                City / State
+              </div>
+              <div class="checklist-item" id="chk-area">
+                <span class="check-icon"><i class="fa-solid fa-circle"></i></span>
+                Area (sq.ft)
+              </div>
+              <div class="checklist-item" id="chk-amenities">
+                <span class="check-icon"><i class="fa-solid fa-circle"></i></span>
+                Amenities
+              </div>
+            </div>
+
+            <!-- AI Info Box -->
+            <div style="background:linear-gradient(135deg,var(--primary-light),var(--secondary-light));border-radius:12px;padding:1rem;margin-bottom:1.25rem;border:1px solid rgba(26,108,243,0.15);">
+              <div style="font-weight:700;font-size:0.85rem;color:var(--text-primary);margin-bottom:0.4rem;">
+                <i class="fa-solid fa-robot" style="color:var(--primary);margin-right:4px;"></i> How AI Predicts
+              </div>
+              <ul style="font-size:0.78rem;color:var(--text-secondary);list-style:none;padding:0;display:flex;flex-direction:column;gap:0.3rem;">
+                <li>📐 Area × Location Base Rate</li>
+                <li>🏠 BHK & Amenity Bonuses</li>
+                <li>📉 Age Depreciation Factor</li>
+                <li>📊 Market Trend Multiplier</li>
+                <li>🏙️ City Tier Adjustment</li>
+              </ul>
+            </div>
+
+            <button class="predict-btn" id="predictBtn" onclick="startPrediction()">
+              <i class="fa-solid fa-magic-wand-sparkles"></i>
+              Predict Price
+            </button>
+
+            <p style="font-size:0.75rem;color:var(--text-muted);text-align:center;margin-top:0.75rem;">
+              <i class="fa-solid fa-shield-halved" style="color:var(--secondary);"></i>
+              AI predictions are based on market data analysis
+            </p>
+          </div>
+        </div>
+
+      </div><!-- /form-page-layout -->
+    </main>
+  </div>
+</div>
+
+<!-- Loading Overlay -->
+<div class="loading-overlay" id="loadingOverlay" style="display:none;">
+  <div class="loading-logo"><i class="fa-solid fa-house-chimney"></i></div>
+  <div class="loading-title">AI Analyzing Property...</div>
+  <div class="loading-message" id="loadingMessage">Initializing AI engine...</div>
+  <div class="loading-bar-wrapper">
+    <div class="loading-bar-fill" id="loadingBarFill"></div>
+  </div>
+  <div class="loading-pct" id="loadingPct">0%</div>
+  <div class="loading-steps">
+    <div class="loading-step" id="lstep-0">
+      <div class="loading-step-icon"><i class="fa-solid fa-check"></i></div>
+      Collecting property information...
+    </div>
+    <div class="loading-step" id="lstep-1">
+      <div class="loading-step-icon"><i class="fa-solid fa-check"></i></div>
+      Analyzing market trends...
+    </div>
+    <div class="loading-step" id="lstep-2">
+      <div class="loading-step-icon"><i class="fa-solid fa-check"></i></div>
+      Comparing similar properties...
+    </div>
+    <div class="loading-step" id="lstep-3">
+      <div class="loading-step-icon"><i class="fa-solid fa-check"></i></div>
+      Calculating location premium...
+    </div>
+    <div class="loading-step" id="lstep-4">
+      <div class="loading-step-icon"><i class="fa-solid fa-check"></i></div>
+      Generating AI appraisal report...
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="js/auth.js"></script>
+<script src="js/prediction.js"></script>
+</body>
+</html>

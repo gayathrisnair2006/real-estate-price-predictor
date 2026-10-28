@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Saved Reports – PropAI</title>
+  <meta name="description" content="View and manage your saved AI property appraisal reports." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon"><i class="fa-solid fa-house-chimney"></i></div>
+      <div class="logo-text">
+        <div class="logo-title">PropAI</div>
+        <div class="logo-sub">Real Estate Intelligence</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <a href="dashboard.html" class="nav-item"><span class="nav-item-icon"><i class="fa-solid fa-gauge-high"></i></span>Dashboard</a>
+      <a href="prediction.html" class="nav-item"><span class="nav-item-icon"><i class="fa-solid fa-brain"></i></span>New Prediction</a>
+      <a href="saved-reports.html" class="nav-item active"><span class="nav-item-icon"><i class="fa-solid fa-folder-open"></i></span>Saved Reports <span class="nav-badge" id="sidebarReportCount">0</span></a>
+      <div class="nav-section-label">Account</div>
+      <a href="index.html" class="nav-item" onclick="logout()"><span class="nav-item-icon"><i class="fa-solid fa-right-from-bracket"></i></span>Logout</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="avatar" id="sidebarAvatar">D</div>
+        <div><div class="user-name" id="sidebarUserName">Demo User</div><div class="user-role">Property Analyst</div></div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="mobile-menu-btn" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+        <div class="page-title">Saved Reports</div>
+      </div>
+      <div class="topbar-right">
+        <button class="btn btn-danger btn-sm" id="clearAllBtn" onclick="clearAllReports()" style="width:auto;display:none;">
+          <i class="fa-solid fa-trash"></i> Clear All
+        </button>
+        <a href="prediction.html" class="btn btn-primary btn-sm" style="width:auto;padding:0.5rem 1.1rem;">
+          <i class="fa-solid fa-plus"></i> New Prediction
+        </a>
+      </div>
+    </header>
+
+    <main class="page-content">
+
+      <div style="margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
+        <div>
+          <h1 style="font-family:'Outfit',sans-serif;font-size:1.4rem;font-weight:800;color:var(--text-primary);margin-bottom:0.2rem;">
+            Your Saved Reports
+          </h1>
+          <p style="color:var(--text-muted);font-size:0.9rem;" id="reportCountText">Loading...</p>
+        </div>
+
+        <!-- Search -->
+        <div style="position:relative;">
+          <i class="fa-solid fa-search" style="position:absolute;left:0.875rem;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:0.85rem;"></i>
+          <input type="text" id="searchReports" class="form-control" placeholder="Search reports..." oninput="filterReports(this.value)"
+            style="padding-left:2.5rem;width:240px;background:var(--bg-card);" />
+        </div>
+      </div>
+
+      <!-- Reports Grid -->
+      <div id="reportsContainer">
+        <!-- Filled by JS -->
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="js/auth.js"></script>
+<script src="js/saved-reports.js"></script>
+</body>
+</html>

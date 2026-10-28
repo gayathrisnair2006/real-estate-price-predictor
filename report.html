@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Appraisal Report – PropAI</title>
+  <meta name="description" content="Detailed AI-generated property appraisal report with investment recommendations." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon"><i class="fa-solid fa-house-chimney"></i></div>
+      <div class="logo-text">
+        <div class="logo-title">PropAI</div>
+        <div class="logo-sub">Real Estate Intelligence</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <a href="dashboard.html" class="nav-item"><span class="nav-item-icon"><i class="fa-solid fa-gauge-high"></i></span>Dashboard</a>
+      <a href="prediction.html" class="nav-item"><span class="nav-item-icon"><i class="fa-solid fa-brain"></i></span>New Prediction</a>
+      <a href="saved-reports.html" class="nav-item"><span class="nav-item-icon"><i class="fa-solid fa-folder-open"></i></span>Saved Reports <span class="nav-badge" id="sidebarReportCount">0</span></a>
+      <div class="nav-section-label">Account</div>
+      <a href="index.html" class="nav-item" onclick="logout()"><span class="nav-item-icon"><i class="fa-solid fa-right-from-bracket"></i></span>Logout</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="avatar" id="sidebarAvatar">D</div>
+        <div><div class="user-name" id="sidebarUserName">Demo User</div><div class="user-role">Property Analyst</div></div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="mobile-menu-btn" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+        <div class="page-title">AI Appraisal Report</div>
+      </div>
+      <div class="topbar-right">
+        <a href="result.html" class="btn btn-outline btn-sm"><i class="fa-solid fa-arrow-left"></i> Back to Result</a>
+        <button class="btn btn-primary btn-sm" onclick="downloadPDF()" style="width:auto;padding:0.5rem 1.1rem;">
+          <i class="fa-solid fa-file-pdf"></i> Download PDF
+        </button>
+      </div>
+    </header>
+
+    <main class="page-content" id="reportContent">
+
+      <!-- Report Header -->
+      <div class="report-header">
+        <div class="report-icon"><i class="fa-solid fa-file-contract"></i></div>
+        <div class="report-header-info">
+          <div class="report-title" id="reportTitle">AI Property Appraisal Report</div>
+          <div class="report-meta">
+            <span id="reportMeta">Generated on — | PropAI v3.2</span>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.5rem;" id="reportTags"></div>
+        </div>
+        <div class="report-actions">
+          <button class="btn btn-secondary btn-sm" onclick="saveReport()">
+            <i class="fa-solid fa-floppy-disk"></i> Save
+          </button>
+          <button class="btn btn-primary btn-sm" onclick="downloadPDF()" style="width:auto;">
+            <i class="fa-solid fa-file-pdf"></i> PDF
+          </button>
+        </div>
+      </div>
+
+      <!-- Section 1: Property Overview -->
+      <div class="report-section">
+        <div class="report-section-title">
+          <div class="report-section-icon rsi-blue"><i class="fa-solid fa-building"></i></div>
+          Property Overview
+        </div>
+        <div class="report-grid-2">
+          <div>
+            <div class="info-row"><span class="info-key">Property Type</span><span class="info-val" id="rpType">–</span></div>
+            <div class="info-row"><span class="info-key">Location</span><span class="info-val" id="rpLocation">–</span></div>
+            <div class="info-row"><span class="info-key">Built-up Area</span><span class="info-val" id="rpArea">–</span></div>
+            <div class="info-row"><span class="info-key">Configuration</span><span class="info-val" id="rpBHK">–</span></div>
+            <div class="info-row"><span class="info-key">Furnishing</span><span class="info-val" id="rpFurnish">–</span></div>
+          </div>
+          <div>
+            <div class="info-row"><span class="info-key">Property Age</span><span class="info-val" id="rpAge">–</span></div>
+            <div class="info-row"><span class="info-key">Floor</span><span class="info-val" id="rpFloor">–</span></div>
+            <div class="info-row"><span class="info-key">Parking</span><span class="info-val" id="rpParking">–</span></div>
+            <div class="info-row"><span class="info-key">Amenities</span><span class="info-val" id="rpAmenities">–</span></div>
+            <div class="info-row"><span class="info-key">Report Date</span><span class="info-val" id="rpDate">–</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2: AI Valuation Summary -->
+      <div class="report-section">
+        <div class="report-section-title">
+          <div class="report-section-icon rsi-green"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+          AI Valuation Summary
+        </div>
+        <div class="report-grid-2" style="gap:1.25rem;">
+          <div class="price-highlight">
+            <div class="price-highlight-lbl">Estimated Market Value</div>
+            <div class="price-highlight-val" id="rpEstPrice">–</div>
+            <div class="price-highlight-lbl" style="margin-top:0.25rem;" id="rpPricePerSqft">–</div>
+          </div>
+          <div class="price-highlight">
+            <div class="price-highlight-lbl">Price Range</div>
+            <div class="price-highlight-val" id="rpPriceRange">–</div>
+            <div class="price-highlight-lbl" style="margin-top:0.25rem;">Low–High Estimate</div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.75rem;margin-top:1rem;" id="valuationMetrics">
+          <!-- Filled by JS -->
+        </div>
+      </div>
+
+      <!-- Section 3: Key Strengths -->
+      <div class="report-section">
+        <div class="report-section-title">
+          <div class="report-section-icon rsi-green"><i class="fa-solid fa-star"></i></div>
+          Key Strengths
+        </div>
+        <div id="strengthsList"></div>
+      </div>
+
+      <!-- Section 4: Areas for Improvement -->
+      <div class="report-section">
+        <div class="report-section-title">
+          <div class="report-section-icon rsi-amber"><i class="fa-solid fa-triangle-exclamation"></i></div>
+          Areas for Improvement
+        </div>
+        <div id="improvementsList"></div>
+      </div>
+
+      <!-- Section 5: Market Analysis -->
+      <div class="report-section">
+        <div class="report-section-title">
+          <div class="report-section-icon rsi-purple"><i class="fa-solid fa-chart-line"></i></div>
+          Market Analysis
+        </div>
+        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.8;margin-bottom:1rem;" id="marketAnalysisText">Loading...</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.75rem;" id="marketStatsGrid">
+          <!-- Filled by JS -->
+        </div>
+      </div>
+
+      <!-- Section 6: Investment Recommendation -->
+      <div class="report-section">
+        <div class="report-section-title">
+          <div class="report-section-icon rsi-blue"><i class="fa-solid fa-briefcase"></i></div>
+          Investment Recommendation
+        </div>
+        <div id="investmentRec" style="background:linear-gradient(135deg,var(--primary-light),var(--secondary-light));border-radius:12px;padding:1.25rem;margin-bottom:1rem;border:1px solid rgba(26,108,243,0.15);">
+          <!-- Filled by JS -->
+        </div>
+        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.8;" id="investmentText">Loading...</p>
+      </div>
+
+      <!-- Section 7: Suggested Prices -->
+      <div class="report-section">
+        <div class="report-section-title">
+          <div class="report-section-icon rsi-green"><i class="fa-solid fa-tags"></i></div>
+          Suggested Prices
+        </div>
+        <div class="report-grid-2" style="gap:1rem;">
+          <div class="price-highlight">
+            <div style="font-size:1.5rem;margin-bottom:0.5rem;">🏷️</div>
+            <div class="price-highlight-lbl">Suggested Selling Price</div>
+            <div class="price-highlight-val" id="rpSellPrice">–</div>
+            <div class="price-highlight-lbl" style="margin-top:0.25rem;">Optimal market listing price</div>
+          </div>
+          <div class="price-highlight">
+            <div style="font-size:1.5rem;margin-bottom:0.5rem;">🔑</div>
+            <div class="price-highlight-lbl">Suggested Monthly Rent</div>
+            <div class="price-highlight-val" id="rpRentPrice">–</div>
+            <div class="price-highlight-lbl" style="margin-top:0.25rem;">Based on rental yield analysis</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Disclaimer -->
+      <div style="background:var(--accent-light);border:1px solid rgba(245,158,11,0.3);border-radius:12px;padding:1rem;margin-top:0.5rem;">
+        <div style="font-weight:700;font-size:0.85rem;color:var(--accent);margin-bottom:0.4rem;">
+          <i class="fa-solid fa-circle-exclamation"></i> Disclaimer
+        </div>
+        <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;">
+          This report is generated by PropAI's machine learning model for informational and educational purposes only.
+          Actual property values may vary based on current market conditions, negotiation, legal status, and other factors.
+          Please consult a certified real estate professional before making any investment decision.
+        </p>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="js/auth.js"></script>
+<script src="js/report.js"></script>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login – PropAI | Real Estate Price Predictor</title>
+  <meta name="description" content="Sign in to PropAI – the AI-driven real estate property price predictor and appraiser. Get instant AI valuations for any property." />
+  <link rel="stylesheet" href="css/style.css" />
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+<body>
+
+<div class="auth-page">
+  <!-- ── Left Hero Panel ── -->
+  <div class="auth-hero">
+    <div class="auth-hero-badge">
+      <i class="fa-solid fa-robot"></i>
+      <span>AI-Powered Real Estate Intelligence</span>
+    </div>
+
+    <h1>Predict Property Prices with <span>Artificial Intelligence</span></h1>
+
+    <p>
+      PropAI combines machine-learning algorithms, real-time market data, and
+      comparative analysis to deliver accurate property valuations in seconds.
+    </p>
+
+    <div class="hero-features">
+      <div class="hero-feature">
+        <div class="hero-feature-icon"><i class="fa-solid fa-brain"></i></div>
+        <span>Advanced AI Price Prediction Engine</span>
+      </div>
+      <div class="hero-feature">
+        <div class="hero-feature-icon"><i class="fa-solid fa-chart-line"></i></div>
+        <span>Live Market Trend Analysis</span>
+      </div>
+      <div class="hero-feature">
+        <div class="hero-feature-icon"><i class="fa-solid fa-file-contract"></i></div>
+        <span>Detailed AI Appraisal Reports</span>
+      </div>
+      <div class="hero-feature">
+        <div class="hero-feature-icon"><i class="fa-solid fa-shield-halved"></i></div>
+        <span>Investment Risk Scoring</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Right Form Panel ── -->
+  <div class="auth-form-panel">
+    <div class="auth-card">
+
+      <!-- Logo -->
+      <div class="auth-card-logo">
+        <div class="logo-icon"><i class="fa-solid fa-house-chimney"></i></div>
+        <div class="logo-text">
+          <div class="logo-title">PropAI</div>
+          <div class="logo-sub">Real Estate Intelligence</div>
+        </div>
+      </div>
+
+      <h2>Welcome back</h2>
+      <p class="subtitle">Sign in to access your AI dashboard</p>
+
+      <!-- Login Form -->
+      <form id="loginForm" onsubmit="handleLogin(event)" novalidate>
+
+        <!-- Email -->
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <div class="input-wrapper">
+            <span class="input-icon"><i class="fa-solid fa-envelope"></i></span>
+            <input
+              type="email"
+              id="email"
+              class="form-input"
+              placeholder="you@example.com"
+              value="demo@propai.com"
+              required
+            />
+          </div>
+          <div class="field-error" id="emailError" style="color:#f87171;font-size:0.8rem;margin-top:0.3rem;display:none;"></div>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="input-wrapper">
+            <span class="input-icon"><i class="fa-solid fa-lock"></i></span>
+            <input
+              type="password"
+              id="password"
+              class="form-input"
+              placeholder="••••••••"
+              value="demo1234"
+              required
+            />
+            <button type="button" class="toggle-password" id="togglePassword" aria-label="Toggle password visibility">
+              <i class="fa-solid fa-eye" id="eyeIcon"></i>
+            </button>
+          </div>
+          <div class="field-error" id="passwordError" style="color:#f87171;font-size:0.8rem;margin-top:0.3rem;display:none;"></div>
+        </div>
+
+        <!-- Options -->
+        <div class="form-options">
+          <label class="checkbox-label">
+            <input type="checkbox" id="rememberMe" checked />
+            Remember me
+          </label>
+          <a href="#" class="forgot-link">Forgot password?</a>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="btn btn-primary" id="loginBtn">
+          <i class="fa-solid fa-right-to-bracket"></i>
+          <span id="loginBtnText">Sign In</span>
+        </button>
+
+      </form>
+
+      <!-- Demo hint -->
+      <div style="margin-top:1rem;padding:0.75rem 1rem;background:rgba(26,108,243,0.12);border:1px solid rgba(26,108,243,0.25);border-radius:10px;font-size:0.8rem;color:rgba(255,255,255,0.7);text-align:center;">
+        <i class="fa-solid fa-circle-info" style="margin-right:4px;color:#5fb3ff;"></i>
+        Demo credentials are pre-filled. Just click <strong style="color:#fff;">Sign In</strong>.
+      </div>
+
+      <div class="auth-footer">
+        Don't have an account? <a href="#" onclick="showSignupToast()">Create one free</a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="js/auth.js"></script>
+</body>
+</html>

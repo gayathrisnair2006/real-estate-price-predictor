@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard – PropAI</title>
+  <meta name="description" content="Your PropAI dashboard – view property analytics, recent predictions, and market trends." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<!-- Sidebar Overlay (mobile) -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<div class="app-layout">
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon"><i class="fa-solid fa-house-chimney"></i></div>
+      <div class="logo-text">
+        <div class="logo-title">PropAI</div>
+        <div class="logo-sub">Real Estate Intelligence</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+
+      <a href="dashboard.html" class="nav-item active">
+        <span class="nav-item-icon"><i class="fa-solid fa-gauge-high"></i></span>
+        Dashboard
+      </a>
+      <a href="prediction.html" class="nav-item">
+        <span class="nav-item-icon"><i class="fa-solid fa-brain"></i></span>
+        New Prediction
+      </a>
+      <a href="saved-reports.html" class="nav-item">
+        <span class="nav-item-icon"><i class="fa-solid fa-folder-open"></i></span>
+        Saved Reports
+        <span class="nav-badge" id="sidebarReportCount">0</span>
+      </a>
+
+      <div class="nav-section-label">Analytics</div>
+
+      <a href="#" class="nav-item" onclick="showToast('Market trends coming soon!','info')">
+        <span class="nav-item-icon"><i class="fa-solid fa-chart-line"></i></span>
+        Market Trends
+      </a>
+      <a href="#" class="nav-item" onclick="showToast('Comparison tool coming soon!','info')">
+        <span class="nav-item-icon"><i class="fa-solid fa-scale-balanced"></i></span>
+        Compare Properties
+      </a>
+
+      <div class="nav-section-label">Account</div>
+
+      <a href="#" class="nav-item" onclick="showToast('Settings coming soon!','info')">
+        <span class="nav-item-icon"><i class="fa-solid fa-gear"></i></span>
+        Settings
+      </a>
+      <a href="index.html" class="nav-item" onclick="logout()">
+        <span class="nav-item-icon"><i class="fa-solid fa-right-from-bracket"></i></span>
+        Logout
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="avatar" id="sidebarAvatar">D</div>
+        <div>
+          <div class="user-name" id="sidebarUserName">Demo User</div>
+          <div class="user-role">Property Analyst</div>
+        </div>
+        <span class="user-chevron"><i class="fa-solid fa-chevron-right"></i></span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── Main Content ── -->
+  <div class="main-content">
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="mobile-menu-btn" onclick="toggleSidebar()" aria-label="Toggle menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="page-title">Dashboard</div>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-icon-btn" title="Notifications">
+          <i class="fa-solid fa-bell"></i>
+          <span class="notif-dot"></span>
+        </div>
+        <a href="prediction.html" class="btn btn-primary btn-sm" style="width:auto;padding:0.5rem 1.1rem;">
+          <i class="fa-solid fa-plus"></i> New Prediction
+        </a>
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <main class="page-content">
+
+      <!-- Welcome Banner -->
+      <div style="margin-bottom:1.75rem;">
+        <h1 style="font-family:'Outfit',sans-serif;font-size:1.6rem;font-weight:800;color:var(--text-primary);margin-bottom:0.25rem;">
+          Good morning, <span class="text-gradient" id="welcomeName">Demo</span> 👋
+        </h1>
+        <p style="color:var(--text-muted);font-size:0.9rem;">
+          Here's an overview of your property analysis activity.
+        </p>
+      </div>
+
+      <!-- Stat Cards -->
+      <div class="stat-grid">
+        <div class="stat-card blue">
+          <div class="stat-icon-wrap blue"><i class="fa-solid fa-building"></i></div>
+          <div class="stat-value" id="statProperties">0</div>
+          <div class="stat-label">Total Properties Analyzed</div>
+          <span class="stat-change positive"><i class="fa-solid fa-arrow-up"></i> +12% this month</span>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-icon-wrap green"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+          <div class="stat-value" id="statAvgPrice">₹0</div>
+          <div class="stat-label">Average Property Price</div>
+          <span class="stat-change positive"><i class="fa-solid fa-arrow-up"></i> +8.3% vs last qtr</span>
+        </div>
+        <div class="stat-card amber">
+          <div class="stat-icon-wrap amber"><i class="fa-solid fa-bullseye"></i></div>
+          <div class="stat-value">94.7%</div>
+          <div class="stat-label">AI Prediction Accuracy</div>
+          <span class="stat-change positive"><i class="fa-solid fa-arrow-up"></i> +1.2% improved</span>
+        </div>
+        <div class="stat-card purple">
+          <div class="stat-icon-wrap purple"><i class="fa-solid fa-file-lines"></i></div>
+          <div class="stat-value" id="statReports">0</div>
+          <div class="stat-label">Saved Reports</div>
+          <span class="stat-change positive"><i class="fa-solid fa-arrow-up"></i> +3 new reports</span>
+        </div>
+      </div>
+
+      <!-- Charts + Quick Actions Row -->
+      <div class="dashboard-grid">
+
+        <!-- Market Trend Chart -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">
+                <i class="fa-solid fa-chart-line" style="color:var(--primary);"></i>
+                Market Trend Analysis
+              </div>
+              <div class="card-subtitle">Property price index — last 12 months</div>
+            </div>
+            <div style="display:flex;gap:0.5rem;">
+              <span class="tag tag-green"><i class="fa-solid fa-arrow-trend-up"></i> Rising</span>
+              <span class="tag tag-blue">YTD +14.2%</span>
+            </div>
+          </div>
+          <div class="chart-container" style="height:260px;">
+            <canvas id="marketTrendChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <i class="fa-solid fa-bolt" style="color:var(--accent);"></i>
+              Quick Actions
+            </div>
+          </div>
+          <div class="quick-actions">
+            <a href="prediction.html" class="quick-action-btn">
+              <div class="qa-icon blue"><i class="fa-solid fa-magic-wand-sparkles"></i></div>
+              <div class="qa-text">
+                <div class="qa-title">New AI Prediction</div>
+                <div class="qa-desc">Predict price of any property</div>
+              </div>
+              <i class="fa-solid fa-chevron-right" style="color:var(--text-muted);font-size:0.8rem;"></i>
+            </a>
+            <a href="saved-reports.html" class="quick-action-btn">
+              <div class="qa-icon green"><i class="fa-solid fa-folder-open"></i></div>
+              <div class="qa-text">
+                <div class="qa-title">View Saved Reports</div>
+                <div class="qa-desc">Access your past appraisals</div>
+              </div>
+              <i class="fa-solid fa-chevron-right" style="color:var(--text-muted);font-size:0.8rem;"></i>
+            </a>
+            <a href="#" class="quick-action-btn" onclick="showToast('Market comparison coming soon!','info')">
+              <div class="qa-icon amber"><i class="fa-solid fa-scale-balanced"></i></div>
+              <div class="qa-text">
+                <div class="qa-title">Compare Properties</div>
+                <div class="qa-desc">Side-by-side AI comparison</div>
+              </div>
+              <i class="fa-solid fa-chevron-right" style="color:var(--text-muted);font-size:0.8rem;"></i>
+            </a>
+          </div>
+
+          <!-- AI Status -->
+          <div style="margin-top:1.25rem;padding:1rem;background:linear-gradient(135deg,var(--primary-light),var(--secondary-light));border-radius:12px;border:1px solid rgba(26,108,243,0.15);">
+            <div style="display:flex;align-items:center;gap:0.625rem;margin-bottom:0.4rem;">
+              <span style="width:8px;height:8px;background:var(--secondary);border-radius:50%;animation:pulse 2s infinite;display:inline-block;"></span>
+              <span style="font-size:0.82rem;font-weight:700;color:var(--text-primary);">AI Engine Status</span>
+              <span class="tag tag-green" style="margin-left:auto;">Online</span>
+            </div>
+            <p style="font-size:0.78rem;color:var(--text-muted);">Model: PropAI v3.2 &nbsp;|&nbsp; Accuracy: 94.7% &nbsp;|&nbsp; Latency: ~2.4s</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Predictions -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">
+              <i class="fa-solid fa-clock-rotate-left" style="color:var(--primary);"></i>
+              Recent Predictions
+            </div>
+            <div class="card-subtitle">Your last 5 AI-generated property valuations</div>
+          </div>
+          <a href="prediction.html" class="btn btn-outline btn-sm">
+            <i class="fa-solid fa-plus"></i> New
+          </a>
+        </div>
+
+        <div class="predictions-list" id="recentPredictions">
+          <!-- Filled by JS -->
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="js/auth.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>
